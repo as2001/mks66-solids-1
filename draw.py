@@ -28,6 +28,10 @@ def scanline_convert(polygons, i, screen, zbuffer ):
     zt = p[0][2]
     y = int(p[0][1])
 
+   dx0 = (p[2][0]-x0)/(
+
+
+
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
     add_point(polygons, x0, y0, z0)
     add_point(polygons, x1, y1, z1)
