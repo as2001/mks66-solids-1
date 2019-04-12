@@ -1,9 +1,32 @@
 from display import *
 from matrix import *
 from gmath import *
+import random
 
 def scanline_convert(polygons, i, screen, zbuffer ):
-    pass
+
+    color = [random.randint(0,255),random.randint(0,255),random.randint(0,255)]
+
+    if polygons[i][1]>polygons[i+2][1]:
+        p = [ (polygons[i+2][0], polygons[i+2][1], polygons[i+2][2]),
+               (polygons[i+1][0], polygons[i+1][1], polygons[i+1][2]),
+               (polygons[i][0], polygons[i][1], polygons[i][2]) ]
+
+    if polygons[i][1]>polygons[i+1][1]:
+        p = [ (polygons[i+1][0], polygons[i+1][1], polygons[i+1][2]),
+               (polygons[i][0], polygons[i][1], polygons[i][2]),
+               (polygons[i+2][0], polygons[i+2][1], polygons[i+2][2]) ]
+
+    if polygons[i+1][1]>polygons[i+2][1]:
+        p = [ (polygons[i][0], polygons[i][1], polygons[i][2]),
+               (polygons[i+2][0], polygons[i+2][1], polygons[i+2][2]),
+               (polygons[i+1][0], polygons[i+1][1], polygons[i+1][2]) ]
+
+    xb = p[0][0]
+    xt = p[0][0]
+    zb = p[0][2]
+    zt = p[0][2]
+    y = int(p[0][1])
 
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
     add_point(polygons, x0, y0, z0)
