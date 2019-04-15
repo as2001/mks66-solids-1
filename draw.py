@@ -7,40 +7,89 @@ def scanline_convert(polygons, i, screen, zbuffer ):
 
     color = [random.randint(0,255),random.randint(0,255),random.randint(0,255)]
 
+    p = [ (polygons[i][0], polygons[i][1], polygons[i][2]),
+               (polygons[i+1][0], polygons[i+1][1], polygons[i+1][2]),
+               (polygons[i+2][0], polygons[i+2][1], polygons[i+2][2]) ]
     if polygons[i][1]>polygons[i+2][1]:
         p = [ (polygons[i+2][0], polygons[i+2][1], polygons[i+2][2]),
                (polygons[i+1][0], polygons[i+1][1], polygons[i+1][2]),
                (polygons[i][0], polygons[i][1], polygons[i][2]) ]
 
-    if polygons[i][1]>polygons[i+1][1]:
+    elif polygons[i][1]>polygons[i+1][1]:
         p = [ (polygons[i+1][0], polygons[i+1][1], polygons[i+1][2]),
                (polygons[i][0], polygons[i][1], polygons[i][2]),
                (polygons[i+2][0], polygons[i+2][1], polygons[i+2][2]) ]
 
-    if polygons[i+1][1]>polygons[i+2][1]:
+    elif polygons[i+1][1]>polygons[i+2][1]:
         p = [ (polygons[i][0], polygons[i][1], polygons[i][2]),
                (polygons[i+2][0], polygons[i+2][1], polygons[i+2][2]),
                (polygons[i+1][0], polygons[i+1][1], polygons[i+1][2]) ]
 
-    xb = p[0][0]
+    '''xb = p[0][0]
     xt = p[0][0]
     zb = p[0][2]
     zt = p[0][2]
-    y = int(p[0][1])
-
-	if float(int(p[2][1]) - y) != 0:
-		dxi = (p[2][0]-p[0][0])/float(int(p[2][1]) - y)
-		dzi = (p[2][2]-p[0][2])/float(int(p[2][1]) - y)
-	else:
-		dxi = 0
-		dzi = 0
-		
-	#it while y < p[2][0]
-	
-	if float(int(p[1][1])-y)!=0:
-		dx1 = (p[1][0]-p[0][0])/float(int(p[1][1]) - y)
-		dz1 = (p[1][2]-p[0][2])/float(int(p[1][1]) - y)
-
+    y = int(p[0][1])'''
+    
+    x0 = p[0][0]
+    x1 = p[1][0]
+    x2 = p[2][0]
+    y0 = p[0][1]
+    y1 = p[1][1]
+    y2 = p[2][1]
+    z0 = p[0][2]
+    z1 = p[1][2]
+    z2 = p[2][2]
+    
+    if y0 > y2:
+        y0, y2 = y2, y0
+        x0, x2 = x2, x0
+        z0, z2 = z2, z0
+    if y0 > y1:
+        y0, y1 = y1, y0
+        x0, x1 = x1, x0
+        z0, z1 = z1, z0
+    if y1 > y2:
+        y1, y2 = y2, y1
+        x1, x2 = x2, x1
+        z1, z2 = z2, z1
+    
+    y = y0
+    xb = x0
+    zb = z0
+    xt = x0
+    zt = z1
+    #dxi=0
+    #dzi=0
+    #if(y2-y0!=0):
+    dxi = (x2-x0) / (y2-y0)
+    dzi = (z2-z0) / (y2-y0)
+    if(y1-y0!=0):
+        dxf = (x1-x0)/(y1-y0)
+        dzf = (z1-z0)/(y1-y0)
+        
+    while y < y1:
+        draw_line(int(xb), y, zb, int(xt), y, zt, screen, zbuffer, color)
+        xb += dxi
+        xt += dxf
+        zb += dzi
+        zt += dzf
+        y += 1
+        
+    y = y1
+    xt = x1
+    zt = z1
+    if y2 - y1 != 0:
+        dxf = (x2-x1)/(y2-y1)
+        dzf = (z2-z1)/(y2-y1)
+    
+    while y < y2:
+        draw_line(int(xb), y, zb, int(xt), y, zt, screen, zbuffer, color)
+        xb += dxi
+        xt += dxf
+        zb += dzi
+        zt += dzf
+        y += 1
 
 
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
@@ -59,8 +108,7 @@ def draw_polygons( polygons, screen, zbuffer, color ):
         normal = calculate_normal(polygons, point)[:]
         #print normal
         if normal[2] > 0:
-		'''
-            draw_line( int(polygons[point][0]),
+            '''draw_line( int(polygons[point][0]),
                        int(polygons[point][1]),
                        polygons[point][2],
                        int(polygons[point+1][0]),
@@ -80,9 +128,8 @@ def draw_polygons( polygons, screen, zbuffer, color ):
                        int(polygons[point+2][0]),
                        int(polygons[point+2][1]),
                        polygons[point+2][2],
-                       screen, zbuffer, color)
-		'''
-			scanline_convert(polygons,point,screen,zbuffer)
+                       screen, zbuffer, color)'''
+            scanline_convert(polygons,point,screen,zbuffer)
         point+= 3
 
 
