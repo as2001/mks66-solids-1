@@ -28,7 +28,18 @@ def scanline_convert(polygons, i, screen, zbuffer ):
     zt = p[0][2]
     y = int(p[0][1])
 
-   dx0 = (p[2][0]-x0)/(
+	if float(int(p[2][1]) - y) != 0:
+		dxi = (p[2][0]-p[0][0])/float(int(p[2][1]) - y)
+		dzi = (p[2][2]-p[0][2])/float(int(p[2][1]) - y)
+	else:
+		dxi = 0
+		dzi = 0
+		
+	#it while y < p[2][0]
+	
+	if float(int(p[1][1])-y)!=0:
+		dx1 = (p[1][0]-p[0][0])/float(int(p[1][1]) - y)
+		dz1 = (p[1][2]-p[0][2])/float(int(p[1][1]) - y)
 
 
 
@@ -48,6 +59,7 @@ def draw_polygons( polygons, screen, zbuffer, color ):
         normal = calculate_normal(polygons, point)[:]
         #print normal
         if normal[2] > 0:
+		'''
             draw_line( int(polygons[point][0]),
                        int(polygons[point][1]),
                        polygons[point][2],
@@ -69,6 +81,8 @@ def draw_polygons( polygons, screen, zbuffer, color ):
                        int(polygons[point+2][1]),
                        polygons[point+2][2],
                        screen, zbuffer, color)
+		'''
+			scanline_convert(polygons,point,screen,zbuffer)
         point+= 3
 
 
